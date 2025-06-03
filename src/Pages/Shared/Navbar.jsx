@@ -84,6 +84,7 @@ const Navbar = () => {
   ];
 
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -99,8 +100,8 @@ const Navbar = () => {
             scrolled ? "shadow-md border-b border-gray-200" : ""
           }`}
         >
-          <nav className="min-h-[110px] max-w-7xl mx-auto px-2 sm:px-8 flex justify-between items-center">
-            <div className="flex items-center  ">
+          <nav className="min-h-[80px] sm:min-h-[110px] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div className="flex items-center">
               <Link to="/" className="flex items-center">
                 <img
                   src={logo}
@@ -113,13 +114,13 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <ul className="hidden lg:flex gap-8 md:gap-12">
+            <ul className="hidden lg:flex gap-6 xl:gap-8">
               {links.map((link) => (
                 <li key={link.to}>
                   <NavLink
                     to={link.to}
                     className={({ isActive }) =>
-                      `px-4 py-2 font-bold text-xl ${
+                      `px-3 py-2 font-bold text-lg xl:text-xl ${
                         isActive
                           ? "text-red-700 border-b-4 border-red-700"
                           : "text-gray-700 hover:text-red-700"
@@ -132,7 +133,37 @@ const Navbar = () => {
               ))}
             </ul>
 
-            <div className="flex items-center gap-4 sm:gap-6 relative group">
+            {/* Mobile menu button */}
+            <button
+              className="lg:hidden p-2 rounded-md text-gray-700 hover:text-red-700 focus:outline-none"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+
+            {/* User icon - visible on all screens */}
+            <div className="hidden lg:flex items-center gap-4 sm:gap-6 relative group">
               <div className="relative">
                 <img
                   src={usericon}
@@ -140,10 +171,8 @@ const Navbar = () => {
                   className="w-11 h-11 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-gray-200 shadow-md cursor-pointer transition-transform duration-200 group-hover:scale-105"
                   loading="lazy"
                 />
-                {/* Red dot for active */}
                 <span className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-red-600 border-2 border-white rounded-full shadow-lg"></span>
               </div>
-              {/* Tooltip on hover */}
               <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 px-4 py-2 rounded-lg bg-white text-gray-800 text-sm font-semibold shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-20 whitespace-nowrap border border-gray-200">
                 <span className="block mb-1">
                   Apologies for inconvenience, our platform is still at beta
@@ -154,29 +183,50 @@ const Navbar = () => {
             </div>
           </nav>
 
-          <div className="lg:hidden bg-white border-t border-gray-200">
-            <ul className="flex justify-around py-3">
-              {links.map((link) => (
-                <li key={link.to}>
-                  <NavLink
-                    to={link.to}
-                    className={({ isActive }) =>
-                      `text-lg font-bold px-4 py-2 ${
-                        isActive
-                          ? "text-red-700"
-                          : "text-gray-700 hover:text-red-700"
-                      }`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
+          {/* Mobile menu */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden bg-white border-t border-gray-200">
+              <ul className="flex flex-col py-3">
+                {links.map((link) => (
+                  <li key={link.to} className="border-b border-gray-100 last:border-0">
+                    <NavLink
+                      to={link.to}
+                      className={({ isActive }) =>
+                        `block px-6 py-4 text-lg font-bold ${
+                          isActive
+                            ? "text-red-700 bg-red-50"
+                            : "text-gray-700 hover:text-red-700 hover:bg-gray-50"
+                        }`
+                      }
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </NavLink>
+                  </li>
+                ))}
+                <li className="border-b border-gray-100 last:border-0">
+                  <div className="flex items-center px-6 py-4 gap-4">
+                    <img
+                      src={usericon}
+                      alt="User"
+                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-md"
+                    />
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        Platform in beta version
+                      </p>
+                      <p className="text-sm font-medium">
+                        Thanks! Wixerd Managing
+                      </p>
+                    </div>
+                  </div>
                 </li>
-              ))}
-            </ul>
-          </div>
+              </ul>
+            </div>
+          )}
         </header>
       </div>
-      <div className="h-[130px] sm:h-[150px]"></div>
+      <div className="h-[80px] sm:h-[110px]"></div>
     </>
   );
 };
