@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import mainAssetArtistry from "../../../Assets/WebAssets/mainAssetArtistry.webp";
 import mainAssetSofnova from "../../../Assets/WebAssets/mainAssetSofnova.webp";
 import mainAssetWixact from "../../../Assets/WebAssets/mainAssetWixact.webp";
@@ -70,10 +71,10 @@ const departments = [
 ];
 
 const Dept = () => {
+    const navigate = useNavigate();
     return (
         <div className="flex flex-col gap-0 w-full">
             {departments.map((dept) => {
-                const isSofnova = dept.id === "sofnova";
                 const isRightImage = dept.id === "artistry" || dept.id === "wixact";
                 return (
                     <div
@@ -112,6 +113,7 @@ const Dept = () => {
                                         border: dept.btnBorder,
                                         background: "transparent",
                                     }}
+                                    onClick={() => navigate(`/solutions/${dept.title}`)}
                                 >
                                     {dept.btnText}
                                 </button>
